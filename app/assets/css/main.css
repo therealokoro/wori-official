@@ -1,0 +1,28 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@theme static {
+  --font-sans: 'Inter', sans-serif;
+
+  --color-brand-50: #feecf1;
+  --color-brand-100: #fedde6;
+  --color-brand-200: #fdbacf;
+  --color-brand-300: #fc93b8;
+  --color-brand-400: #fb619f;
+  --color-brand-500: #f51a8a;
+  --color-brand-600: #cc1472;
+  --color-brand-700: #9c0d56;
+  --color-brand-800: #6f063b;
+  --color-brand-900: #410220;
+  --color-brand-950: #2e0115;
+}
+
+:root {
+  --ui-header-height: --spacing(24);
+}
+
+@utility flex-center {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+}

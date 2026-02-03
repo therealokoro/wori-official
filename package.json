@@ -1,0 +1,43 @@
+{
+  "name": "wori-2026",
+  "type": "module",
+  "private": true,
+  "packageManager": "pnpm@10.28.2",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "typecheck": "nuxt typecheck",
+    "db:generate": "npx nuxt db generate"
+  },
+  "dependencies": {
+    "@iconify-json/lucide": "^1.2.87",
+    "@iconify-json/simple-icons": "^1.2.68",
+    "@libsql/client": "^0.17.0",
+    "@nuxt/devtools": "3.1.1",
+    "@nuxt/image": "2.0.0",
+    "@nuxt/ui": "^4.4.0",
+    "@nuxthub/core": "0.10.6",
+    "@onmax/nuxt-better-auth": "0.0.2-alpha.19",
+    "@peterbud/nuxt-query": "1.4.0",
+    "@vueuse/core": "^14.1.0",
+    "@vueuse/nuxt": "14.1.0",
+    "better-auth": "^1.4.18",
+    "drizzle-kit": "^0.31.8",
+    "drizzle-orm": "^0.45.1",
+    "nuxt": "^4.3.0",
+    "reka-ui": "^2.8.0",
+    "tailwind-variants": "^3.2.2",
+    "tailwindcss": "^4.1.18",
+    "typeid-js": "^1.2.0"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^7.2.0",
+    "@nuxt/eslint": "^1.13.0",
+    "eslint": "^9.39.2",
+    "typescript": "^5.9.3",
+    "vue-tsc": "^3.2.4"
+  }
+}
