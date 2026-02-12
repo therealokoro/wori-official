@@ -4,6 +4,11 @@ export default defineAppConfig({
     colors: {
       primary: 'brand',
       neutral: 'slate'
+    },
+    input: {
+      defaultVariants: {
+        size: 'lg'
+      }
     }
   },
   navigation: [
