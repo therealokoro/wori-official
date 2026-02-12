@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-  const [contact1, contact2] = useAppConfig().info.contacts
-  const { y } = useWindowScroll()
+const { y } = useWindowScroll()
 </script>
 
 <template>
   <div
-    :class="{ 'bg-white shadow': y >=10 }"
+    :class="{ 'bg-white shadow': y >= 10 }"
     class="fixed top-0 left-0 w-full h-(--ui-header-height) z-10 transition-all ease-in-out"
   >
     <!-- Header Content -->

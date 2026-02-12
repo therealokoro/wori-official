@@ -1,39 +1,34 @@
-export type NavLink = {
+/* eslint-disable ts/no-empty-object-type */
+import { useRoute } from '#imports'
+import { computed } from 'vue'
+
+export type NavLink<T extends Record<string, unknown> = {}> = {
   label: string
   to: string
-  icon?: string
-  subLinks?: Omit<NavLink, "subLinks">[] // Made subLinks mandatory with a default empty array
-  active?: boolean // Added to reflect the return type
-}
+  children?: NavLink<T>[]
+} & T
 
-export const useActivePageLink = (links: NavLink[], homeRoute = "/") => {
-  const route = useRoute()
-
-  const normalizePath = (path: string) =>
-    path.replace(/\/+$|^\/+/, "").toLowerCase()
-
-  const markActiveLinks = (
-    links: NavLink[]
-  ): (NavLink & { active: boolean })[] => {
-    return links.map((currLink) => {
-      const active
-        = normalizePath(currLink.to) === normalizePath(homeRoute)
-          ? normalizePath(route.path) === normalizePath(homeRoute)
-          : normalizePath(route.path).startsWith(normalizePath(currLink.to))
-
-      return {
-        ...currLink,
-        active,
-        ...(currLink.subLinks && {
-          subLinks: Array.isArray(currLink.subLinks)
-            ? markActiveLinks(currLink.subLinks)
-            : []
-        })
-      }
-    })
+export type NavLinkWithActive<T extends Record<string, unknown> = {}>
+  = NavLink<T> & {
+    active: boolean
+    children?: NavLinkWithActive<T>[]
   }
 
-  const cachedResult = computed(() => markActiveLinks(links))
+export function useActivePageLink<T extends Record<string, unknown> = {}>(
+  links: NavLink<T>[]
+) {
+  const route = useRoute()
 
-  return cachedResult
+  const mark = (items: NavLink<T>[]): NavLinkWithActive<T>[] =>
+    items.map((link) => {
+      const children = link.children ? mark(link.children) : undefined
+
+      const active
+        = route.matched.some(r => r.path === link.to)
+          || (children?.some(c => c.active) ?? false)
+
+      return { ...link, active, children }
+    })
+
+  return computed(() => mark(links))
 }
