@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { NavigationMenuItem } from '@nuxt/ui'
-
 const items = [
   ...useAppConfig().navigation,
   {
@@ -29,7 +27,8 @@ const socialLinks = useAppConfig().info.socialLinks
 
     <template #right>
       <UButton
-        v-for="item in socialLinks"
+        v-for="(item, i) in socialLinks"
+        :key="i"
         :aria-label="item.label"
         :icon="item.icon"
         :to="item.to"

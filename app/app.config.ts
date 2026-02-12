@@ -15,7 +15,7 @@ export default defineAppConfig({
     {
       label: 'About Us',
       to: '/about/overview',
-      subLinks: [
+      children: [
         { label: 'WORI Overview', to: '/about/overview' },
         { label: 'Our History', to: '/about/history' },
         { label: 'Meet the Team', to: '/about/team' }
