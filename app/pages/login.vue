@@ -10,26 +10,45 @@ const fields: AuthFormField[] = [
     type: 'email',
     label: 'Email Address',
     placeholder: 'Enter your email',
-    required: true,
+    required: true
   },
   {
     name: 'password',
     label: 'Password',
     type: 'password',
     placeholder: 'Enter your password',
-    required: true,
+    required: true
   }
 ]
 
 const schema = z.object({
   email: z.email('Please enter a valid email'),
-  password: z.string('A password is required').min(8, 'Must be at least 8 characters'),
+  password: z.string('A password is required').min(8, 'Must be at least 8 characters')
 })
 
 type Schema = z.output<typeof schema>
 
-function onSubmit(payload: FormSubmitEvent<Schema>) {
-  // console.log('Submitted', payload)
+const errorMsg = ref<null | string>(null)
+const isLoading = ref(false)
+
+async function onSubmit(payload: FormSubmitEvent<Schema>) {
+  errorMsg.value = null
+  isLoading.value = true
+
+  const { signIn } = useUserSession()
+  await signIn.email({ ...payload.data }, {
+    onError({ error }) {
+      if (error) {
+        errorMsg.value = error.message
+      }
+    },
+    onResponse() {
+      isLoading.value = false
+    },
+    onSuccess() {
+      navigateTo('/admin')
+    },
+  })
 }
 </script>
 
@@ -37,17 +56,27 @@ function onSubmit(payload: FormSubmitEvent<Schema>) {
   <Page title="Administrative Login">
     <div class="flex flex-col items-center justify-center gap-4">
       <PageLogo />
+
       <UPageCard class="w-full max-w-md">
         <UAuthForm
           :schema="schema"
           :fields="fields"
           title="Welcome back!"
           description="Enter your login credentials to continue"
-          icon="i-lucide-lock"
           @submit="onSubmit"
         >
           <template #submit>
-            <UButton type="submit" label="Click to Proceed" block class="py-3" />
+            <UButton
+              :loading="isLoading"
+              type="submit"
+              label="Click to Proceed"
+              block
+              class="py-3"
+            />
+          </template>
+
+          <template #validation>
+            <UAlert v-if="errorMsg" color="error" icon="i-lucide-info" :title="errorMsg" />
           </template>
         </UAuthForm>
       </UPageCard>

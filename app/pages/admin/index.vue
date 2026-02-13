@@ -1,7 +1,3 @@
-<script lang="ts" setup>
-
-</script>
-
 <template>
   <Page no-header title="Dashboard Home">
     <ui-text type="heading">

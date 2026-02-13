@@ -35,6 +35,6 @@ useSeoMeta({
       <slot />
     </UMain>
 
-    <LazyPageFooter :hydrate-on-visible />
+    <LazyPageFooter />
   </div>
 </template>

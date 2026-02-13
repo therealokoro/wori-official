@@ -1,3 +1,4 @@
+/* eslint-disable node/prefer-global/process */
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 
@@ -9,23 +10,30 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@peterbud/nuxt-query',
     '@onmax/nuxt-better-auth',
-    '@vueuse/nuxt'
+    '@vueuse/nuxt',
   ],
 
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
 
-  routeRules: {
-    '/': { prerender: true }
+  runtimeConfig: {
+    adminEmail: process.env.ADMIN_EMAIL,
+    adminPass: process.env.ADMIN_PASS
   },
+
+  routeRules: { '/': { prerender: true } },
   compatibilityDate: 'latest',
 
   hub: { db: 'sqlite' },
 
   auth: {
     serverConfig: './configs/auth.server',
-    clientConfig: './configs/auth.client',
+    clientConfig: './configs/auth.client'
     // secondaryStorage: true
+  },
+
+  nuxtQuery: {
+    autoImports: true
   },
 
   eslint: {
@@ -33,8 +41,8 @@ export default defineNuxtConfig({
       standalone: false,
       stylistic: {
         commaDangle: 'never',
-        braceStyle: '1tbs'
+        braceStyle: '1tbs',
       }
-    }
+    },
   },
 })

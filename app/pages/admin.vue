@@ -1,5 +1,5 @@
 <script setup lang="ts">
-definePageMeta({ layout: 'plain' })
+definePageMeta({ layout: 'plain', auth: 'user' })
 
 const open = ref(false)
 function closeMenu() {
