@@ -10,7 +10,8 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "typecheck": "nuxt typecheck",
-    "db:generate": "npx nuxt db generate"
+    "db:generate": "npx nuxt db generate",
+    "db:migrate": "npx nuxt db migrate"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.87",
@@ -33,6 +34,7 @@
     "better-auth": "^1.4.18",
     "drizzle-kit": "^0.31.8",
     "drizzle-orm": "^0.45.1",
+    "drizzle-zod": "^0.8.3",
     "nuxt": "^4.3.0",
     "reka-ui": "^2.8.0",
     "tailwind-variants": "^3.2.2",

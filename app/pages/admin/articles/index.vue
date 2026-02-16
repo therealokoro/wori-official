@@ -1,15 +1,17 @@
 <script lang="ts" setup>
 const { $orpc } = useNuxtApp()
-const { data, status } = useQuery($orpc.healthCheck.queryOptions())
+const { data } = useQuery($orpc.articles.getAll.queryOptions())
+const posts = computed(() => data.value || [])
 </script>
 
 <template>
   <Page no-header title="Manage Articles">
-    <h1>Articles</h1>
+    <div class="mb-5">
+      <UButton to="/admin/articles/new">
+        Create New Article
+      </UButton>
+    </div>
 
-    <pre>
-      data: {{ data }}
-      status: {{ status }}
-    </pre>
+    <ArticleListGrid :posts />
   </Page>
 </template>

@@ -11,7 +11,7 @@ export const article = sqliteTable('article', {
   description: text('description', { length: 500 }).notNull(),
   slug: text('slug', { length: 500 }).notNull().unique(),
   content: text('content').notNull(),
-  coverImage: text('cover_image', { length: 500 }).notNull(),
+  coverImage: text('cover_image').notNull(),
   createdAt: text('created_at')
     .notNull()
     .default(sql`(current_timestamp)`)

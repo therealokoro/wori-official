@@ -68,14 +68,14 @@ const links = useActivePageLink<any>([
       </template>
     </UDashboardSidebar>
 
-    <div class="w-full">
+    <div class="w-full flex flex-col">
       <UDashboardToolbar class="lg:px-8">
         <ui-text type="subtitle">
           Dashboard
         </ui-text>
       </UDashboardToolbar>
 
-      <UContainer class="py-5">
+      <UContainer class="py-5 flex-1 overflow-y-auto overflow-x-hidden">
         <NuxtPage />
       </UContainer>
     </div>

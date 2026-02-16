@@ -24,16 +24,12 @@ export default defineNuxtConfig({
   routeRules: { '/': { prerender: true } },
   compatibilityDate: 'latest',
 
-  hub: { db: 'sqlite' },
+  hub: { db: 'sqlite', blob: true },
 
   auth: {
     serverConfig: './configs/auth.server',
     clientConfig: './configs/auth.client'
     // secondaryStorage: true
-  },
-
-  nuxtQuery: {
-    autoImports: true
   },
 
   eslint: {
@@ -44,5 +40,9 @@ export default defineNuxtConfig({
         braceStyle: '1tbs',
       }
     },
+  },
+
+  nuxtQuery: {
+    autoImports: true
   },
 })
