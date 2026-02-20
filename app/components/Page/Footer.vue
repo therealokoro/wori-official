@@ -1,14 +1,16 @@
 <script setup lang="ts">
+const baseNav = useAppConfig().navigation
+// const aboutUsNav = computed(() => baseNav.find(c => c.children?.length))
 const items = [
-  ...useAppConfig().navigation,
+  ...baseNav,
   {
-    label: "Privacy Policy",
-    to: "/#"
+    label: 'Privacy Policy',
+    to: '/#',
   },
   {
-    label: "Login",
-    to: "/login"
-  }
+    label: 'Login',
+    to: '/login',
+  },
 ]
 
 const socialLinks = useAppConfig().info.socialLinks
@@ -19,10 +21,12 @@ const socialLinks = useAppConfig().info.socialLinks
     <template #left>
       <PageLogo dark />
     </template>
-    
+
     <div class="flex flex-col flex-center">
       <UNavigationMenu :ui="{ link: 'text-xs text-white hover:text-primary' }" :items="items" variant="link" />
-      <p class="text-sm text-white">© {{ new Date().getFullYear() }} • All Rights Reserved | WORI </p>
+      <p class="text-sm text-white">
+        © {{ new Date().getFullYear() }} • All Rights Reserved | WORI
+      </p>
     </div>
 
     <template #right>

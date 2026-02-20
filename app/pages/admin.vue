@@ -38,7 +38,6 @@ const links = useActivePageLink<any>([
     type: 'trigger'
   }
 ])
-// satisfies NavigationMenuItem[][]
 </script>
 
 <template>

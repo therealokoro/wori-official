@@ -4,12 +4,33 @@ import type { z } from 'zod'
 
 type Schema = z.output<typeof CreateArticleSchema>
 
+const route = useRoute()
+const slug = computed(() => route.params.slug as string)
+
+const toast = useToast()
+const { $orpc } = useNuxtApp()
+
+const { data, status } = useQuery(
+  $orpc.articles.getOne.queryOptions({ input: { slug: slug.value } })
+)
+
+const article = computed(() => data.value)
+
 const state = reactive<Partial<Schema>>({
   title: undefined,
   description: undefined,
   content: undefined,
-  coverImage: undefined
+  coverImage: undefined,
 })
+
+watch(article, (val) => {
+  if (!val)
+    return
+  state.title = val.title
+  state.description = val.description
+  state.content = val.content
+  state.coverImage = undefined
+}, { immediate: true })
 
 const items: EditorToolbarItem[] = [
   { kind: 'mark', mark: 'bold', icon: 'i-lucide-bold' },
@@ -21,38 +42,63 @@ const items: EditorToolbarItem[] = [
   { kind: 'bulletList', icon: 'i-lucide-list' },
   { kind: 'orderedList', icon: 'i-lucide-list-ordered' },
   { kind: 'blockquote', icon: 'i-lucide-quote' },
-  { kind: 'link', icon: 'i-lucide-link' }
+  { kind: 'link', icon: 'i-lucide-link' },
 ]
 
-const toast = useToast()
-const { $orpc } = useNuxtApp()
-const mutation = useMutation($orpc.articles.add.mutationOptions())
+const mutation = useMutation($orpc.articles.update.mutationOptions())
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
-  mutation.mutate(event.data, {
+  if (!article.value)
+    return
+  mutation.mutate({ id: article.value.id, ...event.data }, {
     onSuccess() {
-      toast.add({ title: 'Article published successfully', color: 'success' })
+      toast.add({ title: 'Article updated successfully', color: 'success' })
       navigateTo('/admin/articles')
     },
     onError(e) {
-      toast.add({ title: 'Failed to publish article', description: e.message, color: 'error' })
-    }
+      toast.add({ title: 'Failed to update article', description: e.message, color: 'error' })
+    },
   })
 }
 </script>
 
 <template>
-  <Page no-header title="Create New Article">
+  <Page no-header :title="`Edit ${article?.title ?? 'Article'}`">
     <div class="mb-5">
       <ui-text type="title">
-        Create Article
+        Edit Article
       </ui-text>
       <ui-text type="small">
-        Fill the form below to create a new article.
+        Update the fields below and republish.
       </ui-text>
     </div>
 
-    <UForm :schema="CreateArticleSchema" :state="state" class="space-y-4" @submit="onSubmit">
+    <div v-if="status === 'pending'" class="grid lg:grid-cols-5 gap-5">
+      <div class="col-span-1 lg:col-span-2 space-y-5">
+        <USkeleton class="h-10 rounded-md" />
+        <USkeleton class="h-20 rounded-md" />
+        <USkeleton class="h-40 rounded-md" />
+      </div>
+      <div class="col-span-1 lg:col-span-3">
+        <USkeleton class="h-96 rounded-md" />
+      </div>
+    </div>
+
+    <UAlert
+      v-else-if="status === 'error'"
+      color="error"
+      title="Article not found"
+      description="The article you're trying to edit could not be loaded."
+      class="mb-4"
+    >
+      <template #footer>
+        <UButton variant="soft" color="error" to="/admin/articles">
+          Back to Articles
+        </UButton>
+      </template>
+    </UAlert>
+
+    <UForm v-else :schema="CreateArticleSchema" :state="state" class="space-y-4" @submit="onSubmit">
       <div class="grid lg:grid-cols-5 gap-5">
         <div class="col-span-1 lg:col-span-2 space-y-5">
           <UFormField label="Title" name="title">
@@ -74,8 +120,11 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           </UFormField>
 
           <UFormField label="Cover Image" name="coverImage" hint="Max size: 2MB">
-            <ArticleCoverUpload v-model="state.coverImage" />
-          </UFormField>
+            <ArticleCoverUpload
+              v-model="state.coverImage"
+              :existing-url="article?.coverImage ? `/images/${article.coverImage}` : null"
+            />
+          </uformfield>
         </div>
 
         <div class="col-span-1 lg:col-span-3 flex flex-col gap-5">
@@ -92,9 +141,14 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             </UEditor>
           </UFormField>
 
-          <UButton type="submit" block class="py-3" :loading="mutation.isPending.value">
-            Publish Article
-          </UButton>
+          <div class="flex gap-3">
+            <UButton variant="soft" color="neutral" to="/admin/articles" class="py-3">
+              Cancel
+            </UButton>
+            <UButton type="submit" block class="py-3" :loading="mutation.isPending.value">
+              Update Article
+            </UButton>
+          </div>
         </div>
       </div>
     </UForm>

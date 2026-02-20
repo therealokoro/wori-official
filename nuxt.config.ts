@@ -13,6 +13,12 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
   ],
 
+  $production: {
+    image: {
+      provider: 'cloudflare',
+      cloudflare: { baseURL: '/images' }
+    }
+  },
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
 
@@ -42,7 +48,7 @@ export default defineNuxtConfig({
     },
   },
 
-  nuxtQuery: {
-    autoImports: true
-  },
+  image: { provider: 'none' },
+
+  nuxtQuery: { autoImports: true },
 })
