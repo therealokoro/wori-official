@@ -1,17 +1,13 @@
 <script setup lang="ts">
 const baseNav = useAppConfig().navigation
-// const aboutUsNav = computed(() => baseNav.find(c => c.children?.length))
-const items = [
-  ...baseNav,
-  {
-    label: 'Privacy Policy',
-    to: '/#',
-  },
-  {
-    label: 'Login',
-    to: '/login',
-  },
-]
+const items = computed(() => {
+  return [
+    ...baseNav.filter(c => c.label !== 'About Us'),
+    { label: 'About Us', to: '/about/overview' },
+    { label: 'Privacy Policy', to: '/#' },
+    { label: 'Login', to: '/login' }
+  ]
+})
 
 const socialLinks = useAppConfig().info.socialLinks
 </script>
