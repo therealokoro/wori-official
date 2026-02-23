@@ -1,35 +1,31 @@
 <script lang="ts" setup>
-import type { BlogPostProps } from '@nuxt/ui'
-
 const title = 'Articles'
 const description = 'Get the latest news and information about WORI and read about our events.'
 
-const posts = ref<BlogPostProps[]>([
-  {
-    title: 'Nuxt Icon v1',
-    description: 'Discover Nuxt Icon v1!',
-    image: 'https://nuxt.com/assets/blog/nuxt-icon/cover.png',
-    date: '2024-11-25'
-  },
-  {
-    title: 'Nuxt 3.14',
-    description: 'Nuxt 3.14 is out!',
-    image: 'https://nuxt.com/assets/blog/v3.14.png',
-    date: '2024-11-04'
-  },
-  {
-    title: 'Nuxt 3.13',
-    description: 'Nuxt 3.13 is out!',
-    image: 'https://nuxt.com/assets/blog/v3.13.png',
-    date: '2024-08-22'
-  }
-])
+const { $orpc } = useNuxtApp()
+const { data, isPending } = useQuery($orpc.articles.getAll.queryOptions())
+const posts = computed(() =>
+  data.value?.map(curr => ({ ...curr, to: `/articles/${curr.slug}` })) ?? [],
+) 
 </script>
 
 <template>
   <Page :title :description>
     <UPageSection :title :description>
-      <UBlogPosts :posts="posts" />
+      <UPageGrid v-if="isPending">
+        <USkeleton v-for="i in 3" :key="i" class="h-52 rounded-xl" />
+      </UPageGrid>
+
+      <UEmpty
+        v-else-if="!posts.length"
+        size="xl"
+        variant="naked"
+        icon="i-lucide-bell"
+        title="No Articles"
+        description="You're all caught up. There are no articles to read yet!"
+      />
+
+      <UBlogPosts v-else :posts="posts" />
     </UPageSection>
   </Page>
 </template>
