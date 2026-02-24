@@ -35,13 +35,12 @@ export const message = sqliteTable('message', {
     .primaryKey()
     .notNull()
     .$defaultFn(() => typeid('message').toString()),
-  lastname: text('lastname', { length: 500 }).notNull().unique(),
-  firstname: text('firstname', { length: 500 }).notNull().unique(),
-  email: text('email', { length: 500 }).notNull().unique(),
-  isRead: integer('is-read', { mode: 'boolean' }),
-  body: text('body').notNull().unique(),
+  name: text('name', { length: 500 }).notNull(),
+  email: text('email', { length: 500 }).notNull(),
+  isRead: integer('is_read', { mode: 'boolean' }).notNull().$default(() => false),
+  body: text('body').notNull(),
   response: text('response'),
   createdAt: text('created_at')
     .notNull()
-    .default(sql`(current_timestamp)`)
+    .default(sql`(current_timestamp)`),
 })

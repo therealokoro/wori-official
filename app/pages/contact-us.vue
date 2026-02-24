@@ -1,5 +1,23 @@
 <script lang="ts" setup>
+import type { FormSubmitEvent } from "@nuxt/ui"
 const { contacts, email, socialLinks, address } = useAppConfig().info
+
+const state = reactive<Partial<CreateMessageType>>({ name: undefined, email: undefined, body: undefined })
+
+const toast = useToast()
+const { $orpc } = useNuxtApp()
+const createMessage = useMutation($orpc.messages.send.mutationOptions())
+
+async function onSubmit(event: FormSubmitEvent<CreateMessageType>) {
+  createMessage.mutate(event.data, {
+    onSuccess() {
+      toast.add({ title: 'Your message was sent successfully', color: 'success' })
+    },
+    onError(e) {
+      toast.add({ title: 'Something went wrong', description: e.message, color: 'error' })
+    }
+  })
+}
 </script>
 
 <template>
@@ -59,17 +77,17 @@ const { contacts, email, socialLinks, address } = useAppConfig().info
         </UCard>
 
         <UCard>
-          <UForm>
-            <UFormField size="xl" class="mb-5" label="Full Name">
-              <UInput class="w-full" type="text" name="name" placeholder="Enter your full name here" />
+          <UForm class="space-y-5" @submit="onSubmit" :schema="CreateMessageSchema" :state="state">
+            <UFormField size="lg" label="Full Name" name="name">
+              <UInput v-model="state.name" class="w-full" type="text" placeholder="Enter your full name here" />
             </UFormField>
 
-            <UFormField size="xl" class="mb-5" label="Email Address">
-              <UInput class="w-full" type="email" name="email" placeholder="Enter your email address here" />
+            <UFormField size="lg" label="Email Address" name="email">
+              <UInput v-model="state.email" class="w-full" type="email" placeholder="Enter your email address here" />
             </UFormField>
 
-            <UFormField size="xl" class="mb-5" label="Message">
-              <UTextarea class="w-full" name="message" placeholder="Enter your message here" />
+            <UFormField size="lg" label="Message" name="body">
+              <UTextarea v-model="state.body" class="w-full" placeholder="Enter your message here" />
             </UFormField>
 
             <UButton type="submit" class="py-3" block>Send Message</UButton>
