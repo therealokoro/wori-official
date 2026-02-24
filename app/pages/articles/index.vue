@@ -16,15 +16,8 @@ const posts = computed(() =>
         <USkeleton v-for="i in 3" :key="i" class="h-52 rounded-xl" />
       </UPageGrid>
 
-      <UEmpty
-        v-else-if="!posts.length"
-        size="xl"
-        variant="naked"
-        icon="i-lucide-bell"
-        title="No Articles"
-        description="You're all caught up. There are no articles to read yet!"
-      />
-
+      <ArticleEmptyPlaceholder v-else-if="!posts.length" />
+      
       <UBlogPosts v-else :posts="posts" />
     </UPageSection>
   </Page>
