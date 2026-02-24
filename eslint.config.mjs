@@ -5,6 +5,7 @@ import withNuxt from './.nuxt/eslint.config.mjs'
 export default withNuxt(
   antfu({
     rules: {
+      ""
       '@typescript-eslint/no-empty-object-type': 'error'
     },
   })

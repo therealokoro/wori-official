@@ -20,7 +20,7 @@ const textStyles = tv({
   base: 'text-inherit', // Common base styles
   variants: {
     type: {
-      headline: 'font-black text-2xl/tight md:text-4xl',
+      headline: 'font-black text-2xl/tight md:text-3xl',
       heading: 'font-bold text-xl md:text-2xl',
       title: 'font-extrabold text-lg md:text-xl',
       subtitle: 'font-semibold text-md/6 md:text-lg/6',
