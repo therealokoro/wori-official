@@ -51,4 +51,17 @@ export default defineNuxtConfig({
   image: { provider: 'none' },
 
   nuxtQuery: { autoImports: true },
+
+  vite: {
+    optimizeDeps: {
+      include: [
+        'better-auth/vue',
+        '@orpc/client',
+        '@orpc/client/fetch',
+        '@orpc/tanstack-query',
+        'drizzle-zod',
+        'typeid-js',
+      ]
+    }
+  }
 })
