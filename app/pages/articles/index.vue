@@ -6,19 +6,27 @@ const { $orpc } = useNuxtApp()
 const { data, isPending } = useQuery($orpc.articles.getAll.queryOptions())
 const posts = computed(() =>
   data.value?.map(curr => ({ ...curr, to: `/articles/${curr.slug}` })) ?? [],
-) 
+)
 </script>
 
 <template>
   <Page :title :description>
     <UPageSection :title :description>
-      <UPageGrid v-if="isPending">
-        <USkeleton v-for="i in 3" :key="i" class="h-52 rounded-xl" />
-      </UPageGrid>
+      <ClientOnly>
+        <template #fallback>
+          <UPageGrid>
+            <USkeleton v-for="i in 3" :key="i" class="h-52 rounded-xl" />
+          </UPageGrid>
+        </template>
 
-      <ArticleEmptyPlaceholder v-else-if="!posts.length" />
-      
-      <UBlogPosts v-else :posts="posts" />
+        <UPageGrid v-if="isPending">
+          <USkeleton v-for="i in 3" :key="i" class="h-52 rounded-xl" />
+        </UPageGrid>
+
+        <ArticleEmptyPlaceholder v-else-if="!posts.length" />
+
+        <UBlogPosts v-else :posts />
+      </ClientOnly>
     </UPageSection>
   </Page>
 </template>

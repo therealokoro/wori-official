@@ -1,6 +1,6 @@
 import { slugify } from '#shared/utils'
 import { ORPCError } from '@orpc/server'
-import { eq } from 'drizzle-orm'
+import { asc, desc, eq, ne } from 'drizzle-orm'
 import { db } from 'hub:db'
 import { typeid } from 'typeid-js'
 import { z } from 'zod'
@@ -29,7 +29,6 @@ function toArticlePreview(row: typeof article.$inferSelect): ArticlePreview {
 
 async function findOneArticle(id: string) {
   const existing = await db.query.article.findFirst({ where: eq(article.id, id) })
-
   if (!existing) {
     throw new ORPCError('NOT_FOUND', { message: 'The article you are looking for was not found.' })
   }
@@ -94,7 +93,20 @@ export const articleRouter = {
         throw new ORPCError('NOT_FOUND', { message: 'Article not found.' })
       }
 
-      return found
+      const related = await db.query.article.findMany({
+        where: ne(article.id, found.id),
+        orderBy: desc(article.createdAt),
+        limit: 3,
+        columns: {
+          id: true,
+          title: true,
+          slug: true,
+          coverImage: true,
+          createdAt: true,
+        },
+      })
+
+      return { ...found, related }
     }),
 
   update: publicProcedure

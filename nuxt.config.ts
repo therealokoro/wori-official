@@ -23,8 +23,14 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
 
   runtimeConfig: {
-    adminEmail: process.env.ADMIN_EMAIL,
-    adminPass: process.env.ADMIN_PASS
+    betterAuthSecret: process.env.NUXT_BETTER_AUTH_SECRET,
+    adminEmail: process.env.NUXT_ADMIN_EMAIL,
+    adminPass: process.env.NUXT_ADMIN_PASS,
+    public: { siteUrl: process.env.NUXT_SITE_URL }
+  },
+
+  nuxtQuery: {
+    autoImports: ["useQuery", "useMutation", "useQueryClient"]
   },
 
   routeRules: { '/': { prerender: true } },
@@ -49,8 +55,6 @@ export default defineNuxtConfig({
   },
 
   image: { provider: 'none' },
-
-  nuxtQuery: { autoImports: true },
 
   vite: {
     optimizeDeps: {
