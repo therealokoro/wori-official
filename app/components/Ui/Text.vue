@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { VariantProps } from 'tailwind-variants'
 import type { HTMLAttributes } from 'vue'
+import { normalizeClass } from 'vue'
 import { reactiveOmit } from '@vueuse/core'
 import { useForwardProps } from 'reka-ui'
 import { tv } from 'tailwind-variants'
@@ -61,7 +62,7 @@ const computedTag = computed(() => {
 <template>
   <component
     :is="computedTag"
-    :class="textStyles({ class: props.class, type })"
+    :class="textStyles({ class: normalizeClass(props.class), type })"
     v-bind="forwarded"
   >
     <slot />
