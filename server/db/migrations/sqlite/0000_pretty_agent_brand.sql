@@ -16,6 +16,37 @@ CREATE TABLE `account` (
 );
 --> statement-breakpoint
 CREATE INDEX `account_userId_idx` ON `account` (`userId`);--> statement-breakpoint
+CREATE TABLE `album` (
+	`id` text PRIMARY KEY NOT NULL,
+	`title` text NOT NULL,
+	`slug` text NOT NULL,
+	`images` text DEFAULT (json_array()) NOT NULL,
+	`date` integer NOT NULL
+);
+--> statement-breakpoint
+CREATE UNIQUE INDEX `album_slug_unique` ON `album` (`slug`);--> statement-breakpoint
+CREATE TABLE `article` (
+	`id` text(36) PRIMARY KEY NOT NULL,
+	`title` text(500) NOT NULL,
+	`description` text(500) NOT NULL,
+	`slug` text(500) NOT NULL,
+	`content` text NOT NULL,
+	`cover_image` text NOT NULL,
+	`created_at` text DEFAULT (current_timestamp) NOT NULL
+);
+--> statement-breakpoint
+CREATE UNIQUE INDEX `article_title_unique` ON `article` (`title`);--> statement-breakpoint
+CREATE UNIQUE INDEX `article_slug_unique` ON `article` (`slug`);--> statement-breakpoint
+CREATE TABLE `message` (
+	`id` text(36) PRIMARY KEY NOT NULL,
+	`name` text(500) NOT NULL,
+	`email` text(500) NOT NULL,
+	`is_read` integer NOT NULL,
+	`body` text NOT NULL,
+	`response` text,
+	`created_at` text DEFAULT (current_timestamp) NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE `session` (
 	`id` text PRIMARY KEY NOT NULL,
 	`expiresAt` integer NOT NULL,

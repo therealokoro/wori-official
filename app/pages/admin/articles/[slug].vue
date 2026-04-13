@@ -10,7 +10,7 @@ const slug = computed(() => route.params.slug as string)
 const toast = useToast()
 const { $orpc } = useNuxtApp()
 
-const { data, status } = useQuery(
+const { data, status, error } = useQuery(
   $orpc.articles.getOne.queryOptions({ input: { slug: slug.value } })
 )
 
@@ -63,7 +63,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 </script>
 
 <template>
-  <Page no-header :title="`Edit ${article?.title ?? 'Article'}`">
+  <DashboardPage :status :error :title="`Edit ${article?.title ?? 'Article'}`">
     <div class="mb-5">
       <ui-text type="title">
         Edit Article
@@ -152,5 +152,5 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         </div>
       </div>
     </UForm>
-  </Page>
+  </DashboardPage>
 </template>

@@ -42,7 +42,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 </script>
 
 <template>
-  <Page no-header title="Create New Article">
+  <DashboardPage title="Create New Article">
     <div class="mb-5">
       <ui-text type="title">
         Create Article
@@ -98,5 +98,5 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         </div>
       </div>
     </UForm>
-  </Page>
+  </DashboardPage>
 </template>

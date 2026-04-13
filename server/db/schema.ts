@@ -1,5 +1,6 @@
 import { sql } from 'drizzle-orm'
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import { typeid } from 'typeid-js'
 
 export const article = sqliteTable('article', {
@@ -17,18 +18,16 @@ export const article = sqliteTable('article', {
     .default(sql`(current_timestamp)`)
 })
 
-export const album = sqliteTable('album', {
-  id: text('id', { length: 36 })
-    .primaryKey()
+export const album = sqliteTable("album", {
+  id: text().primaryKey().$default(() => typeid('article').toString()),
+  title: text("title").notNull(),
+  slug: text("slug").notNull().unique(),
+  images: text('images', { mode: 'json' })
     .notNull()
-    .$defaultFn(() => typeid('album').toString()),
-  title: text('title', { length: 500 }).notNull().unique(),
-  slug: text('slug', { length: 500 }).notNull().unique(),
-  images: text({ mode: 'json' }).$type<string[]>().notNull(),
-  createdAt: text('created_at')
-    .notNull()
-    .default(sql`(current_timestamp)`)
-})
+    .$type<string[]>() // Infer type as array of strings
+    .default(sql`(json_array())`),
+  date: integer({ mode: "timestamp_ms" }).$default(() => new Date()).notNull()
+});
 
 export const message = sqliteTable('message', {
   id: text('id', { length: 36 })
@@ -44,3 +43,7 @@ export const message = sqliteTable('message', {
     .notNull()
     .default(sql`(current_timestamp)`),
 })
+
+export const AlbumSchema = createSelectSchema(album)
+
+export const CreateAlbumSchema = createInsertSchema(album).omit({ slug: true })

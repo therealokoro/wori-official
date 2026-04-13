@@ -31,6 +31,7 @@
     "@orpc/tanstack-query": "^1.13.14",
     "@orpc/zod": "^1.13.14",
     "@peterbud/nuxt-query": "1.4.0",
+    "@tanstack/vue-query": "^5.99.0",
     "@vueuse/core": "^14.2.1",
     "@vueuse/nuxt": "14.1.0",
     "better-auth": "^1.6.2",
@@ -39,9 +40,11 @@
     "drizzle-zod": "^0.8.3",
     "nuxt": "^4.4.2",
     "reka-ui": "^2.9.5",
+    "string-ts": "^2.3.1",
     "tailwind-variants": "^3.2.2",
     "tailwindcss": "^4.2.2",
     "typeid-js": "^1.2.0",
+    "vue-easy-lightbox": "^1.19.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {

@@ -58,6 +58,7 @@ export default defineNuxtConfig({
 
   vite: {
     optimizeDeps: {
+      noDiscovery: true,
       include: [
         'better-auth/vue',
         '@orpc/client',
@@ -65,6 +66,9 @@ export default defineNuxtConfig({
         '@orpc/tanstack-query',
         'drizzle-zod',
         'typeid-js',
+        'zod',
+        'drizzle-orm',
+        'drizzle-orm/sqlite-core'
       ]
     }
   }

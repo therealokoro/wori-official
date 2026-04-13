@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 const { $orpc } = useNuxtApp()
-const { data, isPending, refetch } = useQuery(computed(() => $orpc.articles.getAll.queryOptions()))
+const { data, error, status, refetch } = useQuery(computed(() => $orpc.articles.getAll.queryOptions()))
 
 const posts = computed(() =>
   data.value?.map(curr => ({ ...curr, to: `/admin/articles/${curr.slug}` })) ?? [],
@@ -12,7 +12,7 @@ async function refreshList() {
 </script>
 
 <template>
-  <Page no-header title="Manage Articles">
+  <DashboardPage :status :error title="Manage Articles">
     <div class="mb-5">
       <UButton to="/admin/articles/new">
         Create New Article
@@ -20,10 +20,10 @@ async function refreshList() {
     </div>
 
     <ArticleListGrid
-      :loading="isPending"
+      :loading="status === 'pending'"
       :posts
       admin
       @delete="refreshList"
     />
-  </Page>
+  </DashboardPage>
 </template>
