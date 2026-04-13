@@ -13,12 +13,6 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
   ],
 
-  $production: {
-    image: {
-      provider: 'cloudflare',
-      cloudflare: { baseURL: '/images' }
-    }
-  },
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
 
@@ -35,6 +29,14 @@ export default defineNuxtConfig({
 
   routeRules: { '/': { prerender: true } },
   compatibilityDate: 'latest',
+
+  nitro: {
+    preset: "cloudflare_module",
+    cloudflare: {
+      deployConfig: true,
+      nodeCompat: true
+    }
+  },
 
   hub: { db: 'sqlite', blob: true },
 
@@ -55,6 +57,13 @@ export default defineNuxtConfig({
   },
 
   image: { provider: 'none' },
+
+  $production: {
+    image: {
+      provider: 'cloudflare',
+      cloudflare: { baseURL: '/images' }
+    }
+  },
 
   vite: {
     optimizeDeps: {

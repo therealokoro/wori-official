@@ -28,13 +28,13 @@ const links = useActivePageLink<any>([
   {
     label: 'Inbox',
     icon: 'i-lucide-inbox',
-    to: '/admin/inbox',
+    to: '/admin/#',
     onSelect: closeMenu,
   },
   {
     label: 'Settings',
     icon: 'i-lucide-settings',
-    to: '/admin/settings',
+    to: '/admin/#',
     type: 'trigger'
   }
 ])
