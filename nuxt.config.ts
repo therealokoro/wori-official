@@ -80,7 +80,7 @@ export default defineNuxtConfig({
     },
     nitro: {
       prerender: {
-        routes: ['/', '/about/*', '/services', '/login', '/donate', '/contact-us']
+        routes: ['/', '/about/*', '/services', '/donate', '/contact-us']
       },
       preset: "cloudflare_module",
       cloudflare: {
