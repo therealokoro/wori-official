@@ -13,7 +13,7 @@ async function uploadImages(files: File[], slug: string): Promise<string[]> {
   const uploads = await Promise.all(
     files.map(async (file) => {
       ensureBlob(file as Blob, { maxSize: '1MB', types: ['image'] })
-      const blobObj = await blob.put(typeid(), file as Blob, {
+      const blobObj = await blob.put(typeid().toString(), file as Blob, {
         addRandomSuffix: true,
         prefix: `albums/${slug}`,
       })

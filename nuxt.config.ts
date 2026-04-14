@@ -30,15 +30,7 @@ export default defineNuxtConfig({
   routeRules: { '/': { prerender: true } },
   compatibilityDate: 'latest',
 
-  nitro: {
-    preset: "cloudflare_module",
-    cloudflare: {
-      deployConfig: true,
-      nodeCompat: true
-    }
-  },
-
-  hub: { db: 'sqlite', blob: true },
+  hub: { db: 'sqlite', blob: true, kv: true },
 
   auth: {
     serverConfig: './configs/auth.server',
@@ -58,13 +50,6 @@ export default defineNuxtConfig({
 
   image: { provider: 'none' },
 
-  $production: {
-    image: {
-      provider: 'cloudflare',
-      cloudflare: { baseURL: '/images' }
-    }
-  },
-
   vite: {
     optimizeDeps: {
       noDiscovery: true,
@@ -80,5 +65,19 @@ export default defineNuxtConfig({
         'drizzle-orm/sqlite-core'
       ]
     }
+  },
+
+  $production: {
+    image: {
+      provider: 'cloudflare',
+      cloudflare: { baseURL: '/images' }
+    },
+    nitro: {
+      preset: "cloudflare_module",
+      cloudflare: {
+        deployConfig: true,
+        nodeCompat: true
+      }
+    },
   }
 })
