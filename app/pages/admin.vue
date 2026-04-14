@@ -1,5 +1,6 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'plain', auth: 'user' })
+const { signOut } = useUserSession()
 
 const open = ref(false)
 function closeMenu() {
@@ -32,10 +33,16 @@ const links = useActivePageLink<any>([
     onSelect: closeMenu,
   },
   {
-    label: 'Settings',
-    icon: 'i-lucide-settings',
+    label: 'Log Out',
+    icon: 'i-lucide-log-out',
     to: '/admin/#',
-    type: 'trigger'
+    onSelect: async () => {
+      await signOut({
+        onSuccess() {
+          navigateTo("/")
+        },
+      })
+    }
   }
 ])
 </script>

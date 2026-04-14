@@ -27,7 +27,13 @@ export default defineNuxtConfig({
     autoImports: ["useQuery", "useMutation", "useQueryClient"]
   },
 
-  routeRules: { '/': { prerender: true } },
+  routeRules: {
+    '/': { prerender: true },
+    "/admin/*": { ssr: false },
+    "/login": {
+      auth: { only: "guest", redirectTo: "/admin" }
+    }
+  },
   compatibilityDate: 'latest',
 
   hub: { db: 'sqlite', blob: true, kv: true },
@@ -73,6 +79,9 @@ export default defineNuxtConfig({
       cloudflare: { baseURL: '/images' }
     },
     nitro: {
+      prerender: {
+        routes: ['/', '/about/*', '/services', '/login', '/donate', '/contact-us']
+      },
       preset: "cloudflare_module",
       cloudflare: {
         deployConfig: true,
