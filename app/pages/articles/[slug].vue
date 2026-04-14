@@ -13,7 +13,7 @@ const { data: article, isPending, error } = useQuery($orpc.articles.getOne.query
 
 const coverImageUrl = computed(() => "/images/" + article.value?.coverImage)
 
-const siteUrl = useRuntimeConfig().public.siteUrl
+const siteUrl = getSiteUrl()
 
 useSeoMeta({
   title: () => article.value?.title,
