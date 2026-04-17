@@ -2,10 +2,6 @@ export interface CreateContextOptions {
   headers: Headers
 }
 
-function getServerAuth() {
-  return serverAuth()
-}
-
 export async function createContext({ headers }: CreateContextOptions) {
   const auth = getServerAuth()
   const session = await auth.api.getSession({ headers })

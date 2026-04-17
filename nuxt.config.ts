@@ -29,19 +29,15 @@ export default defineNuxtConfig({
 
   routeRules: {
     '/': { prerender: true },
-    "/admin/*": { ssr: false },
-    "/login": {
-      auth: { only: "guest", redirectTo: "/admin" }
-    }
+    "/admin/*": { ssr: false }
   },
   compatibilityDate: 'latest',
 
   hub: { db: 'sqlite', blob: true, kv: true },
 
   auth: {
-    serverConfig: './configs/auth.server',
+    clientOnly: true,
     clientConfig: './configs/auth.client'
-    // secondaryStorage: true
   },
 
   eslint: {
