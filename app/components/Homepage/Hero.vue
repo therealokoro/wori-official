@@ -4,7 +4,7 @@ import type { ButtonProps } from '@nuxt/ui'
 const links: ButtonProps[] = [
   {
     label: 'Learn More',
-    to: '/overview',
+    to: '/about/overview',
     trailingIcon: 'i-lucide-arrow-right',
     size: 'xl'
   },

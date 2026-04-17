@@ -38,7 +38,7 @@ function openLightbox(album: Album, startIndex: number = 0) {
       title="Gallery"
       description="View pictures from our programs, outreach and field work"
     >
-      <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+      <div v-if="albums.length" class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         <div
           v-for="album in albums"
           :key="album.id"
@@ -74,6 +74,8 @@ function openLightbox(album: Album, startIndex: number = 0) {
           </div>
         </div>
       </div>
+
+      <GalleryEmptyPlaceholder v-else />
     </UPageSection>
 
     <!-- Lightbox -->

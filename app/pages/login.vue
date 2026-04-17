@@ -2,7 +2,10 @@
 import type { AuthFormField, FormSubmitEvent } from '@nuxt/ui'
 import * as z from 'zod'
 
-definePageMeta({ layout: 'plain' })
+definePageMeta({
+  layout: 'plain', 
+  auth: { only: "guest", redirectTo: "/admin" }
+})
 
 const fields: AuthFormField[] = [
   {

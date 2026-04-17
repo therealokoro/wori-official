@@ -1,12 +1,19 @@
+<!-- PageNavigation.vue -->
 <script lang="ts" setup>
+defineProps<{ mobile?: boolean }>()
+
 const links = useAppConfig().navigation
 const menuLinks = useActivePageLink(links)
-// const isSidebarActive = ref(false)
-// useNuxtApp().hook("page:finish", () => {
-// isSidebarActive.value = false
-// })
 </script>
 
 <template>
-  <UNavigationMenu content-orientation="vertical" :items="menuLinks" :ui="{ link: 'text-xs', list: 'gap-2' }" />
+  <UNavigationMenu
+    :orientation="mobile ? 'vertical' : 'horizontal'"
+    content-orientation="vertical"
+    :items="menuLinks"
+    :ui="{
+      link: 'text-xs',
+      list: mobile ? 'flex-col w-full gap-1' : 'gap-2',
+    }"
+  />
 </template>

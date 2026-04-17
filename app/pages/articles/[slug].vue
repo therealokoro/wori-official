@@ -52,7 +52,7 @@ useSeoMeta({
           />
         </UPageHeader>
 
-        <div class="w-full grid grid-cols-1 lg:grid-cols-3 gap-10">
+        <div class="w-full grid grid-cols-1 lg:grid-cols-3 gap-10 mb-10 lg:mb-15">
           <!-- Main -->
           <article class="col-span-1 lg:col-span-2 space-y-8">
             <div class="w-full aspect-16/7 overflow-hidden rounded-xl">
