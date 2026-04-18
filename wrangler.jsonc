@@ -2,7 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "wori",
   "main": "./.output/server/index.mjs",
-  "compatibility_date": "2026-04-14",
+  "compatibility_date": "2026-04-18",
   "assets": {
     "directory": "./.output/public/",
     "binding": "ASSETS"
@@ -16,42 +16,10 @@
       "bucket_name": "wori"
     }
   ],
-  "kv_namespaces": [
-    {
-      "binding": "CACHE",
-      "id": "3f6f2422858343fc8b9a5959c19f910f"
-    },
-    {
-      "binding": "KV",
-      "id": "e63e8db36f654713a87056e90684ed99"
-    }
-  ],
   "d1_databases": [
     {
       "binding": "DB",
       "database_id": "82e08519-b20d-4e27-9643-fec4079ecfb6"
     }
-  ],
-  "env": {
-    "preview": {
-      "r2_buckets": [
-        {
-          "binding": "BLOB",
-          "bucket_name": "achei-preview"
-        }
-      ],
-      "kv_namespaces": [
-        {
-          "binding": "CACHE",
-          "id": "5c55397308e3402494b6bb5d5957df8d"
-        }
-      ],
-      "d1_databases": [
-        {
-          "binding": "DB",
-          "database_id": "4f12787c-b1ed-4bb3-b431-d96cb371c3c7"
-        }
-      ]
-    }
-  }
+  ]
 }
