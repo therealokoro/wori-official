@@ -43,8 +43,7 @@ jobs:
       - name: Check if admin already exists
         id: check
         run: |
-          RESULT=$(npx wrangler d1 execute DB \
-            --database-id 82e08519-b20d-4e27-9643-fec4079ecfb6 \
+          RESULT=$(npx wrangler d1 execute wori \
             --remote \
             --json \
             --command "SELECT COUNT(*) as count FROM user WHERE email = '${{ secrets.NUXT_ADMIN_EMAIL }}';")
@@ -64,8 +63,7 @@ jobs:
       - name: Seed admin user
         if: steps.check.outputs.count == '0'
         run: |
-          npx wrangler d1 execute DB \
-            --database-id 82e08519-b20d-4e27-9643-fec4079ecfb6 \
+          npx wrangler d1 execute wori \
             --remote \
             --command "INSERT INTO user (id, name, email, email_verified, created_at, updated_at)
               VALUES (
@@ -77,8 +75,7 @@ jobs:
                 ${{ steps.ids.outputs.now }}
               );"
 
-          npx wrangler d1 execute DB \
-            --database-id 82e08519-b20d-4e27-9643-fec4079ecfb6 \
+          npx wrangler d1 execute wori \
             --remote \
             --command "INSERT INTO account (id, account_id, provider_id, user_id, password, created_at, updated_at)
               VALUES (
