@@ -1,6 +1,6 @@
 export default defineEventHandler(async (event) => {
-  const auth = getServerAuth()
   const rc = useRuntimeConfig()
+  const auth = getServerAuth()
 
   try {
     const res = await auth.api.signUpEmail({
@@ -18,10 +18,13 @@ export default defineEventHandler(async (event) => {
     return { status: 'success', user: res.user }
   }
   catch (err: any) {
-    // Better Auth throws when email already exists
     if (err?.body?.code === 'USER_ALREADY_EXISTS') {
       throw createError({ statusCode: 409, statusMessage: 'Admin already exists' })
     }
-    throw err
+    throw createError({
+      statusCode: 500,
+      statusMessage: err?.message || 'Unknown error',
+      data: err?.body || err,
+    })
   }
 })
