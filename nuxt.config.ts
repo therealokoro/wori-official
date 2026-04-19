@@ -1,7 +1,6 @@
 /* eslint-disable node/prefer-global/process */
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-
   modules: [
     '@nuxt/eslint',
     '@nuxt/ui',
@@ -20,7 +19,7 @@ export default defineNuxtConfig({
     betterAuthSecret: process.env.NUXT_BETTER_AUTH_SECRET,
     adminEmail: process.env.NUXT_ADMIN_EMAIL,
     adminPass: process.env.NUXT_ADMIN_PASS,
-    public: { siteUrl: process.env.NUXT_SITE_URL }
+    public: { siteUrl: process.env.NUXT_PUBLIC_SITE_URL }
   },
 
   nuxtQuery: {
@@ -70,10 +69,7 @@ export default defineNuxtConfig({
   },
 
   $production: {
-    image: {
-      provider: 'cloudflare',
-      cloudflare: { baseURL: '/images' }
-    },
+    image: { provider: 'cloudflare' },
     nitro: {
       prerender: {
         routes: ['/', '/services', '/donate', '/contact-us']
