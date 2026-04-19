@@ -2,11 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "wori",
   "main": "./.output/server/index.mjs",
-  "compatibility_date": "  ",
-  "assets": {
-    "directory": "./.output/public/",
-    "binding": "ASSETS"
-  },
+  "compatibility_date": "2026-04-19",
   "observability": {
     "enabled": true
   },
