@@ -26,73 +26,24 @@ jobs:
         run: |
           HASHED=$(node scripts/seed-admin.mjs)
           echo "hashed=$HASHED" >> $GITHUB_OUTPUT
-          echo "✅ Password hashed"
         env:
           NUXT_ADMIN_PASS: ${{ secrets.NUXT_ADMIN_PASS }}
 
-      - name: Generate IDs and timestamp
-        id: ids
+      - name: Seed admin user
         run: |
           NOW=$(node --input-type=module -e "console.log(Date.now())")
           USER_ID=$(node --input-type=module -e "console.log(crypto.randomUUID())")
           ACCOUNT_ID=$(node --input-type=module -e "console.log(crypto.randomUUID())")
-          echo "now=$NOW" >> $GITHUB_OUTPUT
-          echo "user_id=$USER_ID" >> $GITHUB_OUTPUT
-          echo "account_id=$ACCOUNT_ID" >> $GITHUB_OUTPUT
 
-      - name: Check if admin already exists
-        id: check
-        run: |
-          RESULT=$(npx wrangler d1 execute wori \
-            --remote \
-            --json \
-            --command "SELECT COUNT(*) as count FROM user WHERE email = '${{ secrets.NUXT_ADMIN_EMAIL }}';")
-          COUNT=$(echo $RESULT | node --input-type=module -e "
-            const chunks = [];
-            process.stdin.on('data', c => chunks.push(c));
-            process.stdin.on('end', () => {
-              const data = JSON.parse(chunks.join(''));
-              console.log(data[0].results[0].count);
-            });
-          ")
-          echo "count=$COUNT" >> $GITHUB_OUTPUT
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          npx wrangler d1 execute wori --remote --command \
+            "INSERT INTO user (id, name, email, email_verified, created_at, updated_at)
+             VALUES ('$USER_ID', 'Administrator', '${{ secrets.NUXT_ADMIN_EMAIL }}', 1, $NOW, $NOW);"
 
-      - name: Seed admin user
-        if: steps.check.outputs.count == '0'
-        run: |
-          npx wrangler d1 execute wori \
-            --remote \
-            --command "INSERT INTO user (id, name, email, email_verified, created_at, updated_at)
-              VALUES (
-                '${{ steps.ids.outputs.user_id }}',
-                'Administrator',
-                '${{ secrets.NUXT_ADMIN_EMAIL }}',
-                1,
-                ${{ steps.ids.outputs.now }},
-                ${{ steps.ids.outputs.now }}
-              );"
-
-          npx wrangler d1 execute wori \
-            --remote \
-            --command "INSERT INTO account (id, account_id, provider_id, user_id, password, created_at, updated_at)
-              VALUES (
-                '${{ steps.ids.outputs.account_id }}',
-                '${{ secrets.NUXT_ADMIN_EMAIL }}',
-                'credential',
-                '${{ steps.ids.outputs.user_id }}',
-                '${{ steps.hash.outputs.hashed }}',
-                ${{ steps.ids.outputs.now }},
-                ${{ steps.ids.outputs.now }}
-              );"
+          npx wrangler d1 execute wori --remote --command \
+            "INSERT INTO account (id, account_id, provider_id, user_id, password, created_at, updated_at)
+             VALUES ('$ACCOUNT_ID', '${{ secrets.NUXT_ADMIN_EMAIL }}', 'credential', '$USER_ID', '${{ steps.hash.outputs.hashed }}', $NOW, $NOW);"
 
           echo "✅ Admin seeded successfully"
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-
-      - name: Skip seeding
-        if: steps.check.outputs.count != '0'
-        run: echo "⚠️ Admin already exists, skipping"
