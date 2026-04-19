@@ -69,7 +69,7 @@ export default defineNuxtConfig({
   },
 
   $production: {
-    image: { provider: 'cloudflare' },
+    // image: { provider: 'cloudflare' },
     nitro: {
       prerender: {
         routes: ['/', '/services', '/donate', '/contact-us']
