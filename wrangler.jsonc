@@ -1,0 +1,25 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "wori",
+  "main": "./.output/server/index.mjs",
+  "compatibility_date": "  ",
+  "assets": {
+    "directory": "./.output/public/",
+    "binding": "ASSETS"
+  },
+  "observability": {
+    "enabled": true
+  },
+  "r2_buckets": [
+    {
+      "binding": "BLOB",
+      "bucket_name": "wori"
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_id": "82e08519-b20d-4e27-9643-fec4079ecfb6"
+    }
+  ]
+}

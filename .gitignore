@@ -27,4 +27,4 @@ logs
 
 .backup
 
-wrangler.jsonc
+# wrangler.jsonc
