@@ -1,0 +1,21 @@
+name: Seed Admin User
+on:
+  workflow_dispatch:
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Seed Admin User
+        run: |
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://womenrightsinitiative.org/api/seed-auth)
+          echo "Response: $RESPONSE"
+          if [ "$RESPONSE" = "200" ]; then
+            echo "✅ Admin seeded successfully"
+          elif [ "$RESPONSE" = "409" ]; then
+            echo "⚠️ Admin already exists, skipping"
+          else
+            echo "❌ Seeding failed with status $RESPONSE"
+            exit 1
+          fi
