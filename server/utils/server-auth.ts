@@ -2,21 +2,6 @@ import { db, schema } from '@nuxthub/db'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
 
-export async function hashPassword(password: string){
-  // Generate a random salt
-  const salt = crypto.getRandomValues(new Uint8Array(16))
-  const saltHex = Buffer.from(salt).toString("hex")
-
-  // Combine salt + password and hash with SHA-256
-  const encoder = new TextEncoder()
-  const data = encoder.encode(saltHex + password)
-  const hash = await crypto.subtle.digest("SHA-256", data)
-  const hashHex = Buffer.from(hash).toString("hex")
-
-  // Store as salt:hash so we can verify later
-  return `${saltHex}:${hashHex}`
-}
-
 export const getServerAuth = () =>  {
   const baseURL = getSiteUrl()
   return betterAuth({
@@ -27,7 +12,18 @@ export const getServerAuth = () =>  {
       enabled: true,
       password: {
         hash: async (password) => {
-          return await hashPassword(password)
+          // Generate a random salt
+          const salt = crypto.getRandomValues(new Uint8Array(16))
+          const saltHex = Buffer.from(salt).toString("hex")
+
+          // Combine salt + password and hash with SHA-256
+          const encoder = new TextEncoder()
+          const data = encoder.encode(saltHex + password)
+          const hash = await crypto.subtle.digest("SHA-256", data)
+          const hashHex = Buffer.from(hash).toString("hex")
+
+          // Store as salt:hash so we can verify later
+          return `${saltHex}:${hashHex}`
         },
         verify: async ({ password, hash }) => {
           // Split out the salt and re-hash to compare
