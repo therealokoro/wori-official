@@ -14,10 +14,10 @@
     "db:migrate": "npx nuxt db migrate"
   },
   "dependencies": {
-    "@better-auth/drizzle-adapter": "^1.6.3",
+    "@better-auth/drizzle-adapter": "^1.6.5",
     "@iconify-json/lucide": "^1.2.102",
     "@iconify-json/mingcute": "^1.2.7",
-    "@iconify-json/simple-icons": "^1.2.77",
+    "@iconify-json/simple-icons": "^1.2.79",
     "@iconify-json/tabler": "^1.2.33",
     "@libsql/client": "^0.17.2",
     "@nuxt/devtools": "3.1.1",
@@ -32,7 +32,7 @@
     "@orpc/tanstack-query": "^1.13.14",
     "@orpc/zod": "^1.13.14",
     "@peterbud/nuxt-query": "1.4.0",
-    "@tanstack/vue-query": "^5.99.0",
+    "@tanstack/vue-query": "^5.99.2",
     "@vueuse/core": "^14.2.1",
     "@vueuse/nuxt": "14.1.0",
     "better-auth": "^1.6.2",
@@ -40,20 +40,20 @@
     "drizzle-orm": "^0.45.1",
     "drizzle-zod": "^0.8.3",
     "nuxt": "^4.4.2",
-    "reka-ui": "^2.9.5",
+    "reka-ui": "^2.9.6",
     "string-ts": "^2.3.1",
     "tailwind-variants": "^3.2.2",
-    "tailwindcss": "^4.2.2",
+    "tailwindcss": "^4.2.3",
     "typeid-js": "^1.2.0",
     "vue-easy-lightbox": "^1.19.0",
-    "wrangler": "^4.82.2",
+    "wrangler": "^4.84.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^8.1.1",
+    "@antfu/eslint-config": "^8.2.0",
     "@nuxt/eslint": "^1.15.2",
-    "eslint": "^10.2.0",
+    "eslint": "^10.2.1",
     "typescript": "^6.0.2",
-    "vue-tsc": "^3.2.6"
+    "vue-tsc": "^3.2.7"
   }
 }

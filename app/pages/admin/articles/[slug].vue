@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import type { EditorToolbarItem, FormSubmitEvent } from '@nuxt/ui'
+import type { FormSubmitEvent } from '@nuxt/ui'
 import type { z } from 'zod'
 
-type Schema = z.output<typeof CreateArticleSchema>
+type Schema = z.output<typeof UpdateArticleSchema>
 
 const route = useRoute()
 const slug = computed(() => route.params.slug as string)
@@ -29,28 +29,26 @@ watch(article, (val) => {
   state.title = val.title
   state.description = val.description
   state.content = val.content
-  state.coverImage = undefined
+  // Keep the existing filename so validation passes when no new image is picked.
+  // ArticleCoverUpload will show the preview; if the user picks a new file it
+  // replaces this string with a File object.
+  state.coverImage = val.coverImage ?? undefined
 }, { immediate: true })
-
-const items: EditorToolbarItem[] = [
-  { kind: 'mark', mark: 'bold', icon: 'i-lucide-bold' },
-  { kind: 'mark', mark: 'italic', icon: 'i-lucide-italic' },
-  { kind: 'heading', level: 1, icon: 'i-lucide-heading-1' },
-  { kind: 'heading', level: 2, icon: 'i-lucide-heading-2' },
-  { kind: 'textAlign', align: 'left', icon: 'i-lucide-align-left' },
-  { kind: 'textAlign', align: 'center', icon: 'i-lucide-align-center' },
-  { kind: 'bulletList', icon: 'i-lucide-list' },
-  { kind: 'orderedList', icon: 'i-lucide-list-ordered' },
-  { kind: 'blockquote', icon: 'i-lucide-quote' },
-  { kind: 'link', icon: 'i-lucide-link' },
-]
 
 const mutation = useMutation($orpc.articles.update.mutationOptions())
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   if (!article.value)
     return
-  mutation.mutate({ id: article.value.id, ...event.data }, {
+
+  const { coverImage, ...rest } = event.data
+
+  mutation.mutate({
+    id: article.value.id,
+    ...rest,
+    // Only include coverImage if the user picked a new file
+    ...(coverImage instanceof File ? { coverImage } : {}),
+  }, {
     onSuccess() {
       toast.add({ title: 'Article updated successfully', color: 'success' })
       navigateTo('/admin/articles')
@@ -98,7 +96,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       </template>
     </UAlert>
 
-    <UForm v-else :schema="CreateArticleSchema" :state="state" class="space-y-4" @submit="onSubmit">
+    <UForm v-else :schema="UpdateArticleSchema" :state="state" class="space-y-4" @submit="onSubmit">
       <div class="grid lg:grid-cols-5 gap-5">
         <div class="col-span-1 lg:col-span-2 space-y-5">
           <UFormField label="Title" name="title">
@@ -129,16 +127,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
         <div class="col-span-1 lg:col-span-3 flex flex-col gap-5">
           <UFormField label="Content" name="content" description="The content of the article goes here" class="flex-1">
-            <UEditor
-              v-slot="{ editor }"
-              v-model="state.content"
-              content-type="html"
-              :ui="{ content: 'min-h-50', base: '' }"
-              placeholder="Start typing the article content"
-              class="w-full min-h-21 border border-gray-300 rounded-md p-1"
-            >
-              <UEditorToolbar :editor="editor" :items="items" class="pb-1 border-b border-gray-300" />
-            </UEditor>
+            <ArticleEditor v-model="state.content" />
           </UFormField>
 
           <div class="flex gap-3">

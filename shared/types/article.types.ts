@@ -15,7 +15,12 @@ export const CreateArticleSchema = createInsertSchema(article, {
 
 export type CreateArticleType = z.output<typeof CreateArticleSchema>
 
-export const UpdateArticleSchema = createUpdateSchema(article).omit({ slug: true })
+export const UpdateArticleSchema = createUpdateSchema(article, {
+  coverImage: z.instanceof(File)
+    .or(z.string().min(1, 'Please select an image file'))
+    .optional(),
+}).omit({ slug: true })
+
 export type UpdateArticleType = z.output<typeof UpdateArticleSchema>
 
 export const SelectArticleSchema = createSelectSchema(article)
