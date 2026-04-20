@@ -1,6 +1,7 @@
-import { hashPassword } from 'better-auth/crypto'
+import { hashPassword } from "../server/utils/server-auth"
 
 const password = process.env.NUXT_ADMIN_PASS
+
 if (!password) {
   console.error('NUXT_ADMIN_PASS is not set')
   process.exit(1)
